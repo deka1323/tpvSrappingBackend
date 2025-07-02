@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
 from datetime import datetime
+from sqlalchemy.pool import NullPool
 
 # Load environment variables
 load_dotenv()
@@ -17,7 +18,11 @@ app = Flask(__name__)
 CORS(app)
 
 # SQLAlchemy 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(
+    DATABASE_URL,
+    poolclass=NullPool  
+)
+# engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 Base = declarative_base()
 

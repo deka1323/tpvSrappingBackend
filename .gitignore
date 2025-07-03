@@ -6,3 +6,4 @@ credentials.json
 venv/
 .idea/
 .DS_Store
+render.yaml

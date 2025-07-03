@@ -14,6 +14,7 @@ import tiktoken
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from Flask_Backend_Supabase import News, Base
+import shutil
 
 # === Load environment variables ===
 load_dotenv()
@@ -75,10 +76,37 @@ def parse_gpt_response(response_text):
     except Exception as e:
         return "", "", ""
 
+import shutil
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
 def get_driver():
-    options = Options()
-    options.add_argument("--headless")
-    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    chrome_options = Options()
+
+    # ✅ Set binary location to Chromium (installed on Render)
+    chrome_binary = shutil.which("chromium")
+    if not chrome_binary:
+        raise Exception("Chromium binary not found")
+    chrome_options.binary_location = chrome_binary
+
+    # ✅ Chrome options
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    # ✅ Path to chromedriver
+    chromedriver_path = shutil.which("chromedriver")
+    if not chromedriver_path:
+        raise Exception("ChromeDriver not found")
+    service = Service(executable_path=chromedriver_path)
+
+    # ✅ Create driver
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    return driver
+
+
+
 
 def url_exists(session, url):
     return session.query(News).filter_by(url=url).first() is not None

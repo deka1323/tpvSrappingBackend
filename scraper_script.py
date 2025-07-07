@@ -93,10 +93,11 @@ def get_driver():
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
 
-    # ✅ Path for google-chrome-stable on Render
-    options.binary_location = "/usr/bin/google-chrome-stable"
+    # ✅ Chromium binary path for apt-installed chromium
+    options.binary_location = "/usr/bin/chromium"
 
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
 
 
 

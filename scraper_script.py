@@ -92,9 +92,12 @@ def get_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
-    options.binary_location = "/usr/bin/chromium"  # Render installs Chromium here
+    
+    # ✅ Correct path for Render environment
+    options.binary_location = "/usr/bin/chromium-browser"
 
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
 
 
 def url_exists(session, url):

@@ -99,7 +99,6 @@ def get_driver():
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 
-
 def url_exists(session, url):
     return session.query(News).filter_by(url=url).first() is not None
 

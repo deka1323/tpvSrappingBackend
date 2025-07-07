@@ -81,9 +81,9 @@ def parse_gpt_response(response_text):
 #     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 def get_driver():
+    from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
-    from selenium import webdriver
     from webdriver_manager.chrome import ChromeDriverManager
 
     options = Options()
@@ -92,11 +92,12 @@ def get_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
     options.add_argument("--window-size=1920,1080")
-    
-    # ✅ Correct path for Render environment
-    options.binary_location = "/usr/bin/chromium-browser"
+
+    # ✅ Path for google-chrome-stable on Render
+    options.binary_location = "/usr/bin/google-chrome-stable"
 
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
 
 
 def url_exists(session, url):

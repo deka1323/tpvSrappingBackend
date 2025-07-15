@@ -80,7 +80,7 @@ def parse_gpt_response(response_text):
 #     options.add_argument("--headless")
 #     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-def get_driver():
+# def get_driver():
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
     from selenium.webdriver.chrome.service import Service
@@ -98,6 +98,30 @@ def get_driver():
 
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
+import shutil
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+
+def get_driver():
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
+
+    # Dynamically resolve binaries
+    options.binary_location = shutil.which("chromium")
+    chrome_path = shutil.which("chromedriver")
+
+    if not options.binary_location:
+        raise Exception("❌ Chromium binary not found!")
+    if not chrome_path:
+        raise Exception("❌ Chromedriver binary not found!")
+
+    service = Service(executable_path=chrome_path)
+    return webdriver.Chrome(service=service, options=options)
 
 
 
